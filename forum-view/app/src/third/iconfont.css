@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3966477 */
+  src: url('iconfont.woff2?t=1679382076804') format('woff2'),
+       url('iconfont.woff?t=1679382076804') format('woff'),
+       url('iconfont.ttf?t=1679382076804') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-disanfangdenglu:before {
+  content: "\e60a";
+}
+
+.icon-disanfangdenglu_weibo:before {
+  content: "\e600";
+}
+
+.icon-disanfangdenglu_QQ:before {
+  content: "\e601";
+}
+

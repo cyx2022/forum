@@ -1,0 +1,32 @@
+server:
+  port: 8001
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.56.1:3306/forum
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 10000ms
+
+mybatis:
+  mapper-locations: classpath*:/mapper/*Dao.xml
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+
+feign:
+  httpclient:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 600000
+        readTimeout: 600000
+
+
+
+

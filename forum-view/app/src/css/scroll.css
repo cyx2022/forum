@@ -1,0 +1,6 @@
+.el-scrollbar__wrap {
+    overflow-x: hidden !important;
+  }
+.is-horizontal{
+    display: none !important;
+}

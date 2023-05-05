@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyx.main.mapper.ContentMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.cyx.common.entity.Content" id="contentMap">
+        <result property="id" column="id"/>
+        <result property="memberId" column="member_id"/>
+        <result property="contentType" column="content_type"/>
+        <result property="url" column="url"/>
+        <result property="publishTime" column="publish_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="shareCount" column="share_count"/>
+        <result property="storeCount" column="store_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="flag" column="flag"/>
+    </resultMap>
+    <select id="getList" resultType="com.cyx.main.dto.ContentDto">
+        SELECT content.title,content.id id,content.`member_id` member_id ,content.`bar_id` bar_id,content_type,bar.name
+        bar_name,content.url url ,TEXT,content.`publish_time` publish_time, content.`update_time`
+        update_time,content.`share_count` share_count,content.`store_count` store_count,count(comment.`id`)
+        comment_count
+        FROM content
+        LEFT JOIN bar
+        ON content.bar_id=bar.`id`
+        left join comment
+        on content.id=comment.content_id
+        <where>
+            <if test="to.barId!=null">
+                and content.bar_id=#{to.barId}
+            </if>
+        </where>
+        group by content.id
+        order by
+        <if test="to.order==1">
+            comment_count desc, share_count desc ,store_count desc
+        </if>
+    </select>
+    <select id="getByLabelId" resultType="com.cyx.main.dto.ContentDto">
+        select content.title,content.id id,content.`member_id` member_id ,content.`bar_id` bar_id,content_type,bar.name bar_name,content.url url ,TEXT,content.`publish_time` publish_time, content.`update_time` update_time,content.`share_count` share_count,content.`store_count` store_count,count(comment.`id`) comment_count
+        from content
+        left join bar
+        on content.bar_id=bar.id
+        left join label
+        on bar.label_id=label.id
+        left join comment
+        on content.id=comment.content_id
+        where label.id=${label}
+        group by content.id
+        order by ${order}
+    </select>
+    <select id="recommend" resultType="com.cyx.main.dto.ContentDto">
+        SELECT content.title,content.id id,content.`member_id` member_id ,content.`bar_id` bar_id,content_type,bar.name
+        bar_name,content.url url ,TEXT,content.`publish_time` publish_time, content.`update_time`
+        update_time,content.`share_count` share_count,content.`store_count` store_count,count(comment.`id`)
+        comment_count
+        FROM content
+        JOIN bar
+        ON content.bar_id=bar.`id`
+        join comment
+        on content.id=comment.content_id
+        join store
+        on content.id=store.content_id
+        where content.bar_id=${barId} and bar.id=${barId}
+    </select>
+    <select id="getByOwner" resultType="com.cyx.main.dto.ContentDto">
+       SELECT content.title,content.id id,content.`member_id` member_id ,content.`bar_id` bar_id,content_type,bar.name
+        bar_name,content.url url ,TEXT,content.`publish_time` publish_time, content.`update_time`
+        update_time,content.`share_count` share_count,content.`store_count` store_count,COUNT(comment.`id`)
+        comment_count
+        FROM COMMENT
+        LEFT JOIN content
+        ON content.id=comment.content_id
+        LEFT JOIN bar
+        ON content.bar_id=bar.id
+        LEFT JOIN store
+        ON content.id=store.content_id
+        where content.member_id=bar.builder_id and bar.id=${id}
+    </select>
+
+
+</mapper>

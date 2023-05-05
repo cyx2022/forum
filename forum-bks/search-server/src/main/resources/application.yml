@@ -1,0 +1,10 @@
+server:
+  port: 8004
+feign:
+  httpclient:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 600000
+        readTimeout: 600000

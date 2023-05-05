@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyx.main.mapper.BarMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.cyx.common.entity.Bar" id="barMap">
+        <result property="id" column="id"/>
+        <result property="labelId" column="label_id"/>
+        <result property="name" column="name"/>
+        <result property="builderId" column="builder_id"/>
+        <result property="buildDate" column="builder_date"/>
+        <result property="number" column="number"/>
+        <result property="img" column="img"/>
+        <result property="flag" column="flag"/>
+    </resultMap>
+    <select id="getBar" resultType="com.cyx.main.dto.BarDto">
+        SELECT bar.tip tip,label.name label_name,bar.id "id",bar.name "name",bar.img "img",count(content.id) "contentCount", SUM(content.`comment_count`) "commentCount"
+        FROM bar
+        LEFT JOIN content
+        ON bar.id=content.`bar_id`
+        left join label
+        on bar.label_id=label.id
+        where bar.id=#{id}
+
+    </select>
+    <select id="getList" resultType="com.cyx.main.dto.BarDto" parameterType="com.cyx.main.to.BarFavorTo">
+        SELECT bar.tip tip,label.name label_name,bar.id "id",bar.name "name" ,bar.img "img",bar.number number,count(content.id) "contentCount", SUM(content.`comment_count`)
+        "commentCount"
+        FROM bar
+        LEFT JOIN content
+        ON bar.id=content.`bar_id`
+        left join label
+        on bar.label_id=label.id
+        <where>
+            <if test="to.labelId!=null">
+                and label_id=${to.labelId}
+            </if>
+            <if test="to.builderId!=null">
+                and builder_id=#{to.builderId}
+            </if>
+        </where>
+        group by bar.id
+        order by
+        <choose>
+            <when test="to.order==1">
+                IF(ISNULL(COUNT(content.id)),1,0) DESC,
+                count(content.id)desc ,
+                IF(ISNULL(SUM(content.`comment_count`)),1,0) DESC,
+                SUM(content.`comment_count`) desc
+            </when>
+            <otherwise>
+                "build_time" desc
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getListByMemberId" resultType="com.cyx.common.entity.Bar">
+        select bar.* from focusbar left join bar on focusbar.bar_id=bar.id  where focusbar.member_id=${id}
+</select>
+    <select id="getByContentId" resultType="java.lang.Long">
+        select bar.id from bar left join content on bar.id=content.id where content.id=#{contentId}
+    </select>
+
+
+</mapper>

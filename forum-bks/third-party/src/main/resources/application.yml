@@ -1,0 +1,17 @@
+server:
+  port: 8006
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.56.1:3306/forum
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+
+mybatis:
+  mapper-locations: classpath*:/mapper/*Dao.xml
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto

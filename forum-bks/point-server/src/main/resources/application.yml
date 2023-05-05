@@ -1,0 +1,49 @@
+server:
+  port: 8003
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/forum?serverTimezone=Asia/Shanghai&useTimezone=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 10000ms
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    publisher-confirms: true
+    publisher-returns: true
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 5
+          initial-interval: 2s
+          max-interval: 1200s
+          multiplier: 1
+        acknowledge-mode: manual
+
+MQConfig:
+  pointQueue: pointQueue
+  pointExchange: pointExchange
+  pointRoute: pointRoute
+
+  pointWelfareQueue: pointWelfareQueue
+  pointWelfareMsgQueue: pointWelfareMsgQueue
+  pointWelfareExchange: pointWelfareExchange
+  pointWelfareRoute: pointWelfareRoute
+
+
+mybatis:
+  mapper-locations: classpath*:/mapper/*Dao.xml
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

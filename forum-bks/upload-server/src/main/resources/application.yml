@@ -1,0 +1,16 @@
+server:
+  port: 8005
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 10000ms
+minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: img
+  default: default.jpg

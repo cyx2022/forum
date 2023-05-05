@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyx.msg.mapper.MsgMapper">
+    <update id="signBatchMsg">
+        update msg set sign=1 where id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <select id="getLatestHead" resultType="com.cyx.msg.entity.Msg">
+        select * from msg where (id,time) in (select id,max(time) from msg where receiver_id=#{receiverId} and sign=0 and  sender_id!=0 group by time desc )
+    </select>
+</mapper>

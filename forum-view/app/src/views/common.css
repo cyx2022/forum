@@ -1,0 +1,9 @@
+ .el-scrollbar__wrap {
+    overflow-x: hidden !important;
+  }
+  .is-horizontal {
+    display: none !important;
+  }
+  .el-scrollbar__thumb{
+    background-color: gray !important;
+}
